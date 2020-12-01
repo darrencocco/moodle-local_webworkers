@@ -12,7 +12,7 @@ class loader {
     protected $amdjscode = array();
 
     public function __construct() {
-        $this->add_logging();
+//        $this->add_logging();
     }
 
     /**
@@ -90,6 +90,7 @@ class loader {
 
 
         $output .= $requirejsconfig;
+//        $output .= 'window = self;';
         if ($CFG->debugdeveloper) {
             $output .= 'importScripts(\'' . $this->js_fix_url('/lib/requirejs/require.js')->out_as_local_url() . '\');';
         } else {
