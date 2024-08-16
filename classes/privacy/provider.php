@@ -15,21 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for block_activity_modules.
  *
- * @package    atto_advancedundo
- * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    local_webworkers
+ * @copyright  2024 Darren Cocco
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
  */
 
-namespace atto_advancedundo\privacy;
+namespace local_webworkers\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Privacy Subsystem for atto_undo implementing null_provider.
  *
- * @copyright  2018 Andrew Nicols <andrew@nicols.co.uk>
+ * @copyright  2024 Darren Cocco
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {
