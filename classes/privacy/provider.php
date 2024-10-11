@@ -26,6 +26,7 @@ namespace local_webworkers\privacy;
 defined('MOODLE_INTERNAL') || die();
 
 /**
+ * Privacy Subsystem for local_webworkers implementing null_provider.
  *
  * @copyright  2024 Darren Cocco
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
