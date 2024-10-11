@@ -13,8 +13,20 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Plugin version and other meta-data are defined here.
+ *
+ * @package     local_webworkers
+ * @copyright   2024 Darren Cocco
+ * @license     http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019070100;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2017110800;        // Requires this Moodle version.
+/** @var stdClass $plugin */
+$plugin->version   = 2024101100;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2022081800;        // Requires this Moodle version.
+$plugin->release = '0.2';
+$plugin->maturity = MATURITY_ALPHA;
 $plugin->component = 'local_webworkers';  // Full name of the plugin (used for diagnostics).
