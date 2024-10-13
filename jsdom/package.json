@@ -1,0 +1,26 @@
+{
+  "name": "jsdom-worker",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "",
+  "main": "browserify-build.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/darrencocco/moodle-local_webworkers.git"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20.11.0 <21"
+  },
+  "browserslist": [
+    "node 14"
+  ],
+  "dependencies": {
+    "jsdom": "^25.0.1"
+  },
+  "devDependencies": {
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.1",
+    "terser": "^5.34.1"
+  }
+}

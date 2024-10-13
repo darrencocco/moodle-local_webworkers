@@ -190,7 +190,7 @@ EOF;
     }
 
     public function pre_requirejs_dom_shim() {
-        $jsdomshim = "[JSURL]local/webworkers/jsdom-worker.bundle[JSMIN][JSEXT]";
+        $jsdomshim = "[JSURL]local/webworkers/jsdom/jsdom-worker.bundle[JSMIN][JSEXT]";
         $import = $this->include($this->transform_import_urls($jsdomshim));
         return <<<EOF
 ${import}

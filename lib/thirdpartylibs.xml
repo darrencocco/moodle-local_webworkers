@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<libraries>
+    <library>
+        <location>jsdom/jsdom-worker.bundle.js</location>
+        <name>JSDOM bundled for Web Workers</name>
+        <version>1.0.0</version>
+        <license>MIT</license>
+    </library>
+</libraries>
