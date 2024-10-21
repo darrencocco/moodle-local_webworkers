@@ -1,2 +1,2 @@
-!/jsdom/node_modules/
+!/lib/jsdom/node_modules/
 !.idea
