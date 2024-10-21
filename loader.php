@@ -35,6 +35,8 @@ require_once("$CFG->dirroot/lib/jslib.php");
 require_once("$CFG->dirroot/lib/classes/requirejs.php");
 require_once("$CFG->dirroot/local/webworkers/classes/loader.php");
 
+debugging('Use of loader.php for web workers is deprecated, please use worker.php', DEBUG_DEVELOPER);
+
 $slashargument = min_get_slash_argument();
 if (!$slashargument) {
     // The above call to min_get_slash_argument should always work.

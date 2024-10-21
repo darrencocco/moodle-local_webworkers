@@ -4,25 +4,29 @@ Web workers give you the ability to run JavaScript code in a thread
 that will not interrupt the main thread that all the DOM interactions
 etc run on.
 
-For YUI use (deprecated):
+For YUI use:
 ```JavaScript
-var myWorkerName = 
-  new Worker('/local/webworkers/loader.php/-1/{plugin}/{component}');
-myWorkername.onmessage = function(event) {
+var exampleDedicatedWorker;
+M.util.js_pending("YUI/yourScriptName/exampleDedicatedWorker");
+require(["local_webworkers/web_worker"], function(webWorker) {
+    exampleDedicatedWorker = new Worker(webWorker.toURI("{plugin}/{component}"));
+    M.util.js_complete("YUI/yourScriptName/exampleDedicatedWorker");
+});
+exampleDedicatedWorker.onmessage = function(event) {
     console.log(event.data);
 };
 ```
 
 For AMD use:
 ```JavaScript
-define(['local_webworkers/worker'], function({worker}) {
-    let dedicatedWorker = new Worker(worker.toURI('{plugin}/{component}');
+define(['local_webworkers/web_worker'], function({webWorker}) {
+    let dedicatedWorker = new Worker(webWorker.toURI('{plugin}/{component}'));
     dedicatedWorker.addEventListener('message', function(event) {
         console.log(event.data);
     });
     dedicatedWorker.postMessage('');
     
-    let sharedWorker = new SharedWorker(worker.toURI('{plugin}/{component}');
+    let sharedWorker = new SharedWorker(webWorker.toURI('{plugin}/{component}'));
     sharedWorker.port.addEventListener('message', function(event) {
         console.log(event.data);
     });
@@ -33,7 +37,7 @@ define(['local_webworkers/worker'], function({worker}) {
 
 Implement a Dedicated Worker:
 ```JavaScript
-define(['local_webworkers/worker'], function(worker) {
+define(['local_webworkers/web_worker'], function(webWorker) {
     return {
         init: function() {
             self.addEventListener('message', function(e) {
@@ -42,7 +46,7 @@ define(['local_webworkers/worker'], function(worker) {
                     contentsString: e.data.contentsString,
                 });
             });
-            worker.workerSetupComplete();
+            webWorker.workerSetupComplete();
         }
     };
 });
@@ -50,7 +54,7 @@ define(['local_webworkers/worker'], function(worker) {
 
 Implement a Shared Worker:
 ```JavaScript
-define(['local_webworkers/helper'], function(worker) {
+define(['local_webworkers/web_worker'], function(webWorker) {
     return {
         init: function() {
             let portMap = [];
@@ -95,12 +99,12 @@ define(['local_webworkers/helper'], function(worker) {
                 });
             };
 
-            let handleClientMessage = (cliendId) => {
+            let handleClientMessage = (clientId) => {
                 return (e) => {
-                    return handleMessage(cliendId, e);
+                    return handleMessage(clientId, e);
                 };
             };
-            worker.workerSetupComplete();
+            webWorker.workerSetupComplete();
         }
     };
 });
