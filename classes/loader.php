@@ -12,6 +12,7 @@ class loader {
     protected $amdjscode = array();
 
     public function __construct() {
+        debugging("The local_webworkers/loader is deprecated, please use the new worker.php functionality");
 //        $this->add_logging();
     }
 

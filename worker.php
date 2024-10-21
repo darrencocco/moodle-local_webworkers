@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Loads a blob of JS for serving a web worker.
+ * @copyright 2024 Darren Cocco
+ * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ */
 // Disable moodle specific debug messages and any errors in output,
 // comment out when debugging or better look into error log!
 define('NO_DEBUG_DISPLAY', true);
@@ -11,8 +15,8 @@ require_once("$CFG->libdir/weblib.php");
 require_once("$CFG->libdir/configonlylib.php");
 
 global $PAGE;
-$PAGE->set_pagelayout(\local_webworkers\constants::pagelayout);
-$PAGE->set_pagetype(\local_webworkers\constants::pagetype);
+$PAGE->set_pagelayout(\local_webworkers\constants::PAGELAYOUT);
+$PAGE->set_pagetype(\local_webworkers\constants::PAGETYPE);
 $PAGE->set_context(\context_system::instance());
 $renderer = $PAGE->get_renderer('local_webworkers', 'worker');
 
@@ -22,7 +26,6 @@ if ($slashargument = min_get_slash_argument()) {
         header('HTTP/1.0 404 not found');
         die('Slash arguments must contain revision, module and script name');
     }
-    // image must be last because it may contain "/"
     list($rev, $component, $module) = explode('/', $slashargument, 3);
     $rev  = min_clean_param($rev, 'INT');
     $component = min_clean_param($component, 'SAFEDIR');

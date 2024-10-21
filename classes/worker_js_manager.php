@@ -1,5 +1,8 @@
 <?php
+
 namespace local_webworkers;
+
+defined('MOODLE_INTERNAL') || die();
 
 use core_renderer;
 use js_writer;
@@ -9,8 +12,19 @@ use moodle_url;
 /** @var \stdClass $CFG */
 require_once("$CFG->libdir/outputrequirementslib.php");
 require_once("$CFG->libdir/outputcomponents.php");
+/**
+ * Page requirements manager designed for web workers.
+ * @copyright 2024 Darren Cocco
+ * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ */
 class worker_js_manager  extends \page_requirements_manager {
     use include_script;
+
+    /**
+     * Generates RequireJS configuration block.
+     * @return string
+     * @throws \coding_exception
+     */
     public function get_requirejs_init() {
         global $CFG;
         // We will cache JS if cachejs is not set, or it is true.
@@ -28,6 +42,11 @@ class worker_js_manager  extends \page_requirements_manager {
         return $output;
     }
 
+    /**
+     * Transform URL templates for requirejs config.
+     * @param string $string
+     * @return string
+     */
     protected function transform_requirejs_urls($string) {
         global $CFG;
         // We will cache JS if cachejs is not set, or it is true.
@@ -59,6 +78,11 @@ class worker_js_manager  extends \page_requirements_manager {
         return $string;
     }
 
+    /**
+     * Applies similar rules
+     * @param string $string
+     * @return string
+     */
     protected function transform_import_urls($string) {
         global $CFG;
         // We will cache JS if cachejs is not set, or it is true.
@@ -86,6 +110,12 @@ class worker_js_manager  extends \page_requirements_manager {
 
         return $string;
     }
+
+    /**
+     * Loads the requested AMD module.
+     *
+     * @return string
+     */
     public function get_amd_modules() {
         if (during_initial_install()) {
             // Do not run a prefetch during initial install as the DB is not available to service WS calls.
@@ -99,9 +129,9 @@ class worker_js_manager  extends \page_requirements_manager {
     /**
      * Handles quirk in using RequireJS for module loading in web workers.
      *
-     * This chunk of JS helps deal with a problem where the first
-     * connect event seems to be sent before the developer supplied
-     * event handler.
+     * This chunk of JS helps deal with a problem where events can
+     * be sent before the developer supplied event handler is
+     * registered.
      *
      * @return string
      */
@@ -168,6 +198,13 @@ EOF;
 
     }
 
+    /**
+     * Modified version of the JS header code for workers.
+     *
+     * @param moodle_page $page
+     * @param core_renderer $renderer
+     * @return string
+     */
     public function get_head_code(moodle_page $page, core_renderer $renderer) {
         global $CFG;
 
@@ -189,6 +226,16 @@ EOF;
         return $js;
     }
 
+    /**
+     * Inserts the shim to emulate a DOM.
+     *
+     * Work around for dependencies that can't
+     * be disentangled without significant and
+     * possibly fundamental changes to Moodle
+     * core.
+     *
+     * @return string
+     */
     public function pre_requirejs_dom_shim() {
         $jsdomshim = "[JSURL]local/webworkers/jsdom/jsdom-worker.bundle[JSMIN][JSEXT]";
         $import = $this->include($this->transform_import_urls($jsdomshim));
@@ -199,6 +246,15 @@ vdom = new jsdom.JSDOM("");
 EOF;
 
     }
+
+    /**
+     * Finish setup of emulated DOM.
+     *
+     * Has to be split up because of load order
+     * shenanigans.
+     *
+     * @return string
+     */
     public function post_requirejs_dom_shim() {
         return <<<EOF
 document = vdom.window.document;
@@ -246,6 +302,10 @@ EOF;
         $this->js_amd_inline($js);
     }
 
+    /**
+     * JS for importing YUI lib.
+     * @return string
+     */
     protected function get_yui3lib_headcode() {
         global $CFG;
 
@@ -284,11 +344,22 @@ EOF;
 
     }
 
+    /**
+     * JS for importing the javascript-static.js file.
+     * @return string
+     */
     protected function get_static_js() {
         $staticjs = "[JSURL]lib/javascript-static[JSEXT]";
         return $this->include($this->transform_import_urls($staticjs));
     }
 
+    /**
+     * Generates the JS for the worker.
+     * @param $page
+     * @param $renderer
+     * @return string
+     * @throws \coding_exception
+     */
     public function get_worker_js($page, $renderer) {
         return $this->get_requirejs_quirk_header_code() .
             $this->pre_requirejs_dom_shim() .

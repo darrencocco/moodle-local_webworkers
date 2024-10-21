@@ -6,6 +6,12 @@ use core_renderer;
 use core_useragent;
 use stdClass;
 
+/**
+ * Dummy renderer based on JS renderer.
+ *
+ * @copyright  2024 Darren Cocco
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ */
 class worker_renderer extends core_renderer {
 
     /**
