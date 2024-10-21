@@ -18,7 +18,6 @@ require_once("$CFG->libdir/outputcomponents.php");
  * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
  */
 class worker_js_manager  extends \page_requirements_manager {
-    use include_script;
 
     /**
      * Generates RequireJS configuration block.
@@ -351,6 +350,16 @@ EOF;
     protected function get_static_js() {
         $staticjs = "[JSURL]lib/javascript-static[JSEXT]";
         return $this->include($this->transform_import_urls($staticjs));
+    }
+
+    /**
+     * Wraps a url in an importScripts.
+     *
+     * @param $url
+     * @return string
+     */
+    protected function include($url) {
+        return "importScripts('$url');\n";
     }
 
     /**
