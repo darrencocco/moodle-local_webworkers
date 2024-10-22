@@ -21,10 +21,12 @@ require(['local_webworkers/test_dedicated_client', 'jquery'], function(dedicated
     $('#workerresults').append('<p>Message from dedicated worker <br/>' + message.contentsString + '</p>');
   };
   dedicatedClient.init(writeToScreen);
+  $("#testform").click(dedicatedClient.sendMessage.bind(dedicatedClient));
 });
 EOL
 );
 
+echo '<p><a id="testform" href="#">Send a message</a></p>';
 echo '<div id="workerresults"><p>Messages echoed back by the dedicated worker.</p></div>';
 
 echo $OUTPUT->footer();

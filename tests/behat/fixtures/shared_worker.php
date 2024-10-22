@@ -21,10 +21,11 @@ require(['local_webworkers/test_shared_client', 'jquery'], function(sharedClient
     $('#workerresults').append('<p>Message from client ID: ' + message.clientId + '<br/>' + message.contentsString + '</p>');
   };
   sharedClient.init(writeToScreen);
+  $("#testform").click(sharedClient.sendMessage.bind(sharedClient));
 });
 EOL
 );
-
+echo '<p><a id="testform" href="#">Send a message</a></p>';
 echo '<div id="workerresults"><p>Messages from other tabs.</p></div>';
 
 echo $OUTPUT->footer();

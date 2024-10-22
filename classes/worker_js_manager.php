@@ -153,7 +153,6 @@ let quirkActivate = function(e) {
 }
 let quirkMessage = function(e) {
     self.unansweredMessages.push(e);
-    console.log(e);
 }
 
 let handlersReadyResolve, handlersReadyReject;
@@ -236,7 +235,7 @@ EOF;
      * @return string
      */
     public function pre_requirejs_dom_shim() {
-        $jsdomshim = "[JSURL]local/webworkers/lib/jsdom/jsdom-worker.bundle[JSMIN][JSEXT]";
+        $jsdomshim = "[JSURL]local/webworkers/lib/jsdom/jsdom-worker.bundle[JSEXT]";
         $import = $this->include($this->transform_import_urls($jsdomshim));
         return <<<EOF
 ${import}

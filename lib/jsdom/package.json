@@ -1,6 +1,6 @@
 {
   "name": "jsdom-worker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "",
   "main": "browserify-build.js",
@@ -16,11 +16,12 @@
     "node 14"
   ],
   "dependencies": {
+    "canvas": "^2.11.2",
     "jsdom": "^25.0.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.25.8",
     "babelify": "^10.0.0",
-    "browserify": "^17.0.1",
-    "terser": "^5.34.1"
+    "browserify": "^17.0.1"
   }
 }
