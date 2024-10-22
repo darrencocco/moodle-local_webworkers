@@ -1,8 +1,16 @@
+### Moodle Web Worker support
 Adds a way of using [Web Workers][1] inside of YUI and AMD code
 
 Web workers give you the ability to run JavaScript code in a thread
 that will not interrupt the main thread that all the DOM interactions
 etc run on.
+
+#### TODO
+* Add caching to worker.php
+* Test and add support for Service Workers
+* Add Shared Workers tests (limitations in behat prevent this)
+
+#### Usage examples
 
 For YUI use:
 ```JavaScript
