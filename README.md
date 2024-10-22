@@ -8,7 +8,7 @@ etc run on.
 #### TODO
 * Add caching to worker.php
 * Test and add support for Service Workers
-* Add Shared Workers tests (limitations in behat prevent this)
+* Add Shared Workers tests (done)
 
 #### Usage examples
 
