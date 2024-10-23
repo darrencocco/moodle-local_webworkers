@@ -6,7 +6,7 @@ that will not interrupt the main thread that all the DOM interactions
 etc run on.
 
 #### TODO
-* Add caching to worker.php
+* Add caching to worker.php (done)
 * Test and add support for Service Workers
 * Add Shared Workers tests (done)
 

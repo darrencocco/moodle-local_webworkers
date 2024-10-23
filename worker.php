@@ -38,6 +38,40 @@ if (!min_is_revision_valid_and_current($rev)) {
     // If the rev is invalid, normalise it to -1 to disable all caching.
     $rev = -1;
 }
+$etag = sha1("$rev/$component/$module");
+
+if ($rev > 0) {
+    $candidate = $CFG->localcachedir.'/webworkers/'.$etag;
+
+    if (file_exists($candidate)) {
+        if (!empty($_SERVER['HTTP_IF_NONE_MATCH']) || !empty($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+            // we do not actually need to verify the etag value because our files
+            // never change in cache because we increment the rev parameter
+            js_send_unmodified(filemtime($candidate), $etag);
+        }
+        js_send_cached($candidate, $etag);
+    } else {
+        // The JS needs minfifying, so we're gonna have to load our full Moodle
+        // environment to process it..
+        define('ABORT_AFTER_CONFIG_CANCEL', true);
+
+        define('NO_MOODLE_COOKIES', true); // Session not used here.
+        define('NO_UPGRADE_CHECK', true);  // Ignore upgrade check.
+
+        require("$CFG->dirroot/lib/setup.php");
+
+        $workerjsmanager = new \local_webworkers\worker_js_manager();
+        $workerjsmanager->js_call_amd("$component/$module", "init");
+        $content = $workerjsmanager->get_worker_js($PAGE, $renderer);
+
+        js_write_cache_file_content($candidate, $content);
+        // verify nothing failed in cache file creation
+        clearstatcache();
+        if (file_exists($candidate)) {
+            js_send_cached($candidate, $etag);
+        }
+    }
+}
 
 $workerjsmanager = new \local_webworkers\worker_js_manager();
 $workerjsmanager->js_call_amd("$component/$module", "init");
