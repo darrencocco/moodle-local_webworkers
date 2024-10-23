@@ -10,4 +10,3 @@ Feature: Support of dedicated Workers
     And I click on "Send a message" "link"
     Then I should see "I have for you a modest proposal."
     And I log out
-    
