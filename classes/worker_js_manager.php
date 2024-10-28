@@ -307,16 +307,9 @@ EOF;
     protected function get_yui3lib_headcode() {
         global $CFG;
 
-        $jsrev = $this->get_jsrev();
-
         $yuiformat = '-min';
         if ($this->yui3loader->filter === 'RAW') {
             $yuiformat = '';
-        }
-
-        $format = '-min';
-        if ($this->YUI_config->groups['moodle']['filter'] === 'DEBUG') {
-            $format = '-debug';
         }
 
         $rollupversion = $CFG->yui3version;
