@@ -6,6 +6,7 @@ require_once(__DIR__."/../../../../lib/behat/behat_base.php");
  *
  * @copyright 2024 Darren Cocco
  * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ * @package local_webworkers
  */
 class behat_local_webworkers extends behat_base {
     /**

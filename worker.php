@@ -4,7 +4,7 @@
  *
  * @copyright 2024 Darren Cocco
  * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
- * @package local_webworker
+ * @package local_webworkers
  */
 // Disable moodle specific debug messages and any errors in output,
 // comment out when debugging or better look into error log!
