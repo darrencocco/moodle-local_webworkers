@@ -16,6 +16,7 @@ require_once("$CFG->libdir/outputcomponents.php");
  * Page requirements manager designed for web workers.
  * @copyright 2024 Darren Cocco
  * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ * @package local_webworkers
  */
 class worker_js_manager  extends \page_requirements_manager {
 
@@ -238,7 +239,7 @@ EOF;
         $jsdomshim = "[JSURL]local/webworkers/lib/jsdom/jsdom-worker.bundle[JSEXT]";
         $import = $this->include($this->transform_import_urls($jsdomshim));
         return <<<EOF
-${import}
+{$import}
 vdom = new jsdom.JSDOM("");
 
 EOF;

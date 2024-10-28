@@ -9,5 +9,7 @@ use core_renderer_ajax;
  *
  * @copyright  2024 Darren Cocco
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ * @package    local_webworkers
  */
-class worker_renderer extends core_renderer_ajax {}
+class worker_renderer extends core_renderer_ajax {
+}

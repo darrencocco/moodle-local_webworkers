@@ -1,4 +1,4 @@
-@local_webworkers @javascript
+@local @local_webworkers @javascript
 Feature: Support of Shared Workers
   In order to support shared web workers
   As an admin

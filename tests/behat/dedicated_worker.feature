@@ -1,4 +1,4 @@
-@local_webworkers @javascript
+@local @local_webworkers @javascript
 Feature: Support of dedicated Workers
   In order to support dedicated Web Workers
   As an admin

@@ -5,6 +5,7 @@ namespace local_webworkers;
  *
  * @copyright  2024 Darren Cocco
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
+ * @package    local_webworkers;
  */
 class constants {
     /**
