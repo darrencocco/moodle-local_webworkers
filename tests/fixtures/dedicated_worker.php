@@ -4,12 +4,12 @@
  * @copyright 2024 Darren Cocco
  * @license http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
  */
-require_once(__DIR__.'/../../../../../config.php');
+require_once(__DIR__.'/../../../../config.php');
 
 // Only continue for behat site.
-defined('BEHAT_SITE_RUNNING') ||  die();
+//defined('BEHAT_SITE_RUNNING') ||  die();
 
-$PAGE->set_url('/local/webworkers/tests/behat/fixtures/dedicated_worker.php');
+$PAGE->set_url('/local/webworkers/tests/fixtures/dedicated_worker.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('admin');
 
