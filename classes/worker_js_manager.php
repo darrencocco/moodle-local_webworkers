@@ -355,6 +355,12 @@ EOF;
         return "importScripts('$url');\n";
     }
 
+    protected function static_code_url($rev, $component, $module): moodle_url {
+        $url = new moodle_url("/local/webworkers/worker-static.php");
+        $url->set_slashargument("/$rev/$component/$module");
+        return $url;
+    }
+
     /**
      * Generates the JS for the worker.
      * @param $page
@@ -362,14 +368,18 @@ EOF;
      * @return string
      * @throws \coding_exception
      */
-    public function get_worker_js($page, $renderer) {
+    public function get_cacheable_worker_js() {
         return $this->get_requirejs_quirk_header_code() .
             $this->pre_requirejs_dom_shim() .
             $this->get_requirejs_init() .
             $this->post_requirejs_dom_shim() .
-            $this->get_head_code($page, $renderer) .
             $this->get_yui3lib_headcode() .
             $this->get_static_js() .
             $this->get_amd_modules();
+    }
+
+    public function get_uncacheable_worker_js($page, $renderer, $rev, $component, $module) {
+        return $this->get_head_code($page, $renderer) .
+            $this->include($this->static_code_url($rev, $component, $module));
     }
 }
