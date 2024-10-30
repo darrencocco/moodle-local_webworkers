@@ -114,16 +114,30 @@ class worker_js_manager  extends \page_requirements_manager {
     /**
      * Loads the requested AMD module.
      *
+     * This is split out as the order of execution
+     * isn't ready when the RequireJS configuration
+     * is defined.
+     *
      * @return string
      */
     public function get_amd_modules() {
+        $prefix = <<<EOF
+M.util.js_pending("core/first");
+require(['core/first'], function() {
+
+EOF;
         if (during_initial_install()) {
             // Do not run a prefetch during initial install as the DB is not available to service WS calls.
             $prefetch = '';
         } else {
             $prefetch = "require(['core/prefetch'])\n";
         }
-        return $prefetch . implode(";\n", $this->amdjscode);
+        $suffix = <<<EOF
+
+    M.util.js_complete("core/first");
+});
+EOF;
+        return $prefix . $prefetch . implode(";\n", $this->amdjscode) . $suffix;
     }
 
     /**
@@ -261,44 +275,6 @@ window = self;
 
 EOF;
 
-    }
-
-    public function js_call_amd($fullmodule, $func = null, $params = array()) {
-        global $CFG;
-
-        $modulepath = explode('/', $fullmodule);
-
-        $modname = clean_param(array_shift($modulepath), PARAM_COMPONENT);
-        foreach ($modulepath as $module) {
-            $modname .= '/' . clean_param($module, PARAM_ALPHANUMEXT);
-        }
-
-        $functioncode = [];
-        if ($func !== null) {
-            $func = clean_param($func, PARAM_ALPHANUMEXT);
-
-            $jsonparams = array();
-            foreach ($params as $param) {
-                $jsonparams[] = json_encode($param);
-            }
-            $strparams = implode(', ', $jsonparams);
-            if ($CFG->debugdeveloper) {
-                $toomanyparamslimit = 1024;
-                if (strlen($strparams) > $toomanyparamslimit) {
-                    debugging('Too much data passed as arguments to js_call_amd("' . $fullmodule . '", "' . $func .
-                        '"). Generally there are better ways to pass lots of data from PHP to JavaScript, for example via Ajax, ' .
-                        'data attributes, ... . This warning is triggered if the argument string becomes longer than ' .
-                        $toomanyparamslimit . ' characters.', DEBUG_DEVELOPER);
-                }
-            }
-
-            $functioncode[] = "amd.{$func}({$strparams});";
-        }
-
-        $initcode = implode(' ', $functioncode);
-        $js = "require(['{$modname}'], function(amd) {{$initcode}});";
-
-        $this->js_amd_inline($js);
     }
 
     /**
