@@ -1,4 +1,18 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_webworkers;
 
@@ -338,6 +352,13 @@ EOF;
         return "importScripts('$url');\n";
     }
 
+    /**
+     * URL for static portions of web worker JS.
+     * @param integer $rev
+     * @param string $component
+     * @param string $module
+     * @return \core\url
+     */
     protected function static_code_url($rev, $component, $module): \core\url {
         $url = new \core\url("/local/webworkers/worker-static.php");
         $url->set_slashargument("/$rev/$component/$module");
@@ -361,6 +382,16 @@ EOF;
             $this->get_amd_modules();
     }
 
+    /**
+     * Generates user session dependent JS.
+     *
+     * @param \moodle_page $page
+     * @param \renderer_base $renderer
+     * @param int $rev
+     * @param string $component
+     * @param string $module
+     * @return string
+     */
     public function get_uncacheable_worker_js($page, $renderer, $rev, $component, $module) {
         return $this->get_head_code($page, $renderer) .
             $this->include($this->static_code_url($rev, $component, $module));
