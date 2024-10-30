@@ -4,14 +4,21 @@ namespace local_webworkers;
 
 defined('MOODLE_INTERNAL') || die();
 
-use core_renderer;
-use js_writer;
+global $CFG;
+if ($CFG->version < 2024100700) {
+    require_once("$CFG->libdir/outputrequirementslib.php");
+    require_once("$CFG->libdir/outputcomponents.php");
+    class_alias("page_requirements_manager", "core\\output\\requirements\\page_requirements_manager");
+    class_alias("core_renderer", "core\\output\\core_renderer");
+    class_alias("js_writer", "core\\output\\js_writer");
+    class_alias("moodle_url", "core\\url");
+
+}
+
 use moodle_page;
-use moodle_url;
 
 /** @var \stdClass $CFG */
-require_once("$CFG->libdir/outputrequirementslib.php");
-require_once("$CFG->libdir/outputcomponents.php");
+
 /**
  * Page requirements manager designed for web workers.
  * @copyright 2024 Darren Cocco
@@ -65,9 +72,9 @@ class worker_js_manager  extends \page_requirements_manager {
             $minextension = '';
         }
 
-        $jsloader = new moodle_url('/lib/javascript.php');
+        $jsloader = new \core\url('/lib/javascript.php');
         $jsloader->set_slashargument('/' . $jsrev . '/');
-        $requirejsloader = new moodle_url('/lib/requirejs.php');
+        $requirejsloader = new \core\url('/lib/requirejs.php');
         $requirejsloader->set_slashargument('/' . $jsrev . '/');
 
         $string = str_replace('[BASEURL]', $requirejsloader, $string);
@@ -98,9 +105,9 @@ class worker_js_manager  extends \page_requirements_manager {
             $minextension = '';
         }
 
-        $jsloader = new moodle_url('/lib/javascript.php');
+        $jsloader = new \core\url('/lib/javascript.php');
         $jsloader->set_slashargument('/' . $jsrev . '/');
-        $requirejsloader = new moodle_url('/lib/requirejs.php');
+        $requirejsloader = new \core\url('/lib/requirejs.php');
         $requirejsloader->set_slashargument('/' . $jsrev . '/');
 
         $string = str_replace('[BASEURL]', $requirejsloader, $string);
@@ -215,10 +222,10 @@ EOF;
      * Modified version of the JS header code for workers.
      *
      * @param moodle_page $page
-     * @param core_renderer $renderer
+     * @param \core\output\core_renderer $renderer
      * @return string
      */
-    public function get_head_code(moodle_page $page, core_renderer $renderer) {
+    public function get_head_code(moodle_page $page, \core\output\core_renderer $renderer) {
         global $CFG;
 
         // Note: the $page and $output are not stored here because it would
@@ -234,7 +241,7 @@ EOF;
         $js .= "M.pageloadstarttime = new Date();\n";
 
         // Add a subset of Moodle configuration to the M namespace.
-        $js .= js_writer::set_variable('M.cfg', $this->M_cfg, false) . "\n";
+        $js .= \core\output\js_writer::set_variable('M.cfg', $this->M_cfg, false) . "\n";
 
         return $js;
     }
@@ -331,8 +338,8 @@ EOF;
         return "importScripts('$url');\n";
     }
 
-    protected function static_code_url($rev, $component, $module): moodle_url {
-        $url = new moodle_url("/local/webworkers/worker-static.php");
+    protected function static_code_url($rev, $component, $module): \core\url {
+        $url = new \core\url("/local/webworkers/worker-static.php");
         $url->set_slashargument("/$rev/$component/$module");
         return $url;
     }

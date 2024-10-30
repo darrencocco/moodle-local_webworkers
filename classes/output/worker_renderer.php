@@ -2,7 +2,10 @@
 
 namespace local_webworkers\output;
 
-use core_renderer_ajax;
+global $CFG;
+if ($CFG->version < 2024100700) {
+    class_alias("core_renderer_ajax", "core\\output\\core_renderer_ajax");
+}
 
 /**
  * Dummy renderer based on AJAX renderer.
@@ -11,5 +14,5 @@ use core_renderer_ajax;
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU LGPL v3 or later
  * @package    local_webworkers
  */
-class worker_renderer extends core_renderer_ajax {
+class worker_renderer extends \core\output\core_renderer_ajax {
 }
